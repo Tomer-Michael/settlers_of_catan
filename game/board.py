@@ -515,7 +515,7 @@ class Board:
         return False
 
     def get_lands_to_place_robber_on(self) -> List[Land]:
-        return [land for land in self._lands if land.identifier != self._robber_land.identifier]
+        return [land for land in self._lands if land is not self._robber_land]
 
     _vertices_rows = [
         [i for i in range(0, 3)],
@@ -661,9 +661,9 @@ class Board:
         return vertices_map
 
     def _set_vertices_attributes(self, vertices_to_lands):
-        networkx.set_node_attributes(self._roads_and_colonies, Board.lands, vertices_to_lands)
+        networkx.set_node_attributes(self._roads_and_colonies, vertices_to_lands, Board.lands)
         vertices_to_players = {v: (None, Colony.Uncolonised) for v in Board._vertices}
-        networkx.set_node_attributes(self._roads_and_colonies, Board.player, vertices_to_players)
+        networkx.set_node_attributes(self._roads_and_colonies, vertices_to_players, Board.player)
 
     def _set_edges_attributes(self, vertices_to_lands):
         for edge in self._roads_and_colonies.edges():
