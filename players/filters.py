@@ -20,9 +20,10 @@ def create_bad_robber_placement_filter(player):
         assert isinstance(state, CatanState)
         if move.robber_placement_land == state.board.get_robber_land():
             return True
-        for location in move.robber_placement_land.locations:
-            if state.board.is_colonised_by(player, location):
-                return False
+        if state.get_current_player() == player:
+            for location in move.robber_placement_land.locations:
+                if state.board.is_colonised_by(player, location):
+                    return False
         return True
 
     def bad_robber_placement_filter(all_moves, state):
